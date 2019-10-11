@@ -20,8 +20,9 @@ class TransaksiController extends Controller
     public function __construct(TransaksiRepositories $transaksiRepo)
     {
         $this->transaksiRepo = $transaksiRepo;
+        $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +47,29 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        
+        $getRow     = Transaksi::orderBy('id', 'DESC')->get();
+        $rowCount   = $getRow->count();
+
+        $lastId     = $getRow->first();
+        $kode       = "TR00001";
+
+        if($rowCount > 0):
+            if($lastId->id < 9):
+                $kode = "TR0000".''.($lastId->id + 1);
+            elseif($lastId->id < 99):
+                $kode = "TR000".''.($lastId->id + 1);
+            elseif($lastId->id < 999):
+                $kode = "TR00".''.($lastId->id + 1);
+            elseif($lastId->id < 9999):
+                $kode = "TR0".''.($lastId->id + 1);
+            else:
+                $kode = "TR".''.($lastId->id + 1);
+            endif;
+        endif;
+
+        $bukus      = Buku::where('jumlah_buku', '>', 0)->get();
+        $anggotas   = Anggota::get();
+        return view('transaksi.create', compact('bukus', 'kode', 'anggotas'));
     }
 
     /**

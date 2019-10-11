@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,8 +19,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <!-- <link rel="stylesheet" href="{{ asset('css/select2.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}"> -->
+    <link rel="stylesheet" href="{{ asset('css/select2.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
     @section('css')
 
     @show
@@ -102,13 +102,16 @@
             @yield('content')
         </main>
     </div>
-
-    <!-- <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script> -->
-    <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
-    <!-- <script src="{{asset('js/select2.min.js')}}"></script> -->
+    
+    <script src="{{asset('vendors/js/vendor.bundle.base.js')}}"></script>
+    <script src="{{asset('vendors/js/vendor.bundle.addons.js')}}"></script>
+    <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('vendors/sweetalert/sweetalert.all.js')}}"></script>
+    <script src="{{asset('js/select2.min.js')}}"></script>
     @include('sweetalert::alert')
     @section('js')
+    
     @show
 </body>
 </html>
