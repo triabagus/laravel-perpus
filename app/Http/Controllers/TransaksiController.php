@@ -84,7 +84,8 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $this->validate($request, $this->transaksiRepo->validationRule(), $this->transaksiRepo->customMessageRule());
+
     }
 
     /**

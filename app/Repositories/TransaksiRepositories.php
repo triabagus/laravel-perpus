@@ -51,4 +51,22 @@ class TransaksiRepositories implements MyInterface
         return $this->model->orderBy('id', 'DESC')->get();
     }
 
+    public function validationRule()
+    {
+        return $rules = [
+            'kode_transaksi' => 'required|string|max:255',
+            'tgl_pinjam' => 'required',
+            'tgl_kembali' => 'required',
+            'buku_id' => 'required',
+            'anggota_id' => 'required',
+            'jumlah_buku_dipinjam' => 'required'
+        ];
+    }
+
+    public function customMessageRule()
+    {  
+        return $customMessage = [
+            'jumlah_buku_dipinjam.required' => 'kosong'
+        ];
+    }
 }

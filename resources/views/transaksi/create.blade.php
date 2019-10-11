@@ -49,7 +49,7 @@
                             <div class="col-md-6">
                                 <input id="kode_transaksi" type="text" class="form-control" name="kode_transaksi" value="{{ $kode }}" required readonly="">
                                 @if ($errors->has('kode_transaksi'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('kode_transaksi') }}</strong>
                                     </span>
                                 @endif
@@ -66,7 +66,7 @@
                             <div class="col-md-3">
                                 <input id="tgl_pinjam" type="date" class="form-control" name="tgl_pinjam" value="{{ date('Y-m-d', strtotime(Carbon\Carbon::today()->toDateString())) }}" required @if(Auth::user()->level == 'user') readonly @endif>
                                 @if ($errors->has('tgl_pinjam'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('tgl_pinjam') }}</strong>
                                     </span>
                                 @endif
@@ -82,7 +82,7 @@
                             <div class="col-md-3">
                                 <input id="tgl_kembali" type="date"  class="form-control" name="tgl_kembali" value="{{ date('Y-m-d', strtotime(Carbon\Carbon::today()->addDays(5)->toDateString())) }}" required="" @if(Auth::user()->level == 'user') readonly @endif>
                                 @if ($errors->has('tgl_kembali'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('tgl_kembali') }}</strong>
                                     </span>
                                 @endif
@@ -105,7 +105,7 @@
                                 </span>
                                 </div>
                                 @if ($errors->has('buku_id'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('buku_id') }}</strong>
                                     </span>
                                 @endif
@@ -130,7 +130,7 @@
                                 </span>
                                 </div>
                                 @if ($errors->has('anggota_id'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('anggota_id') }}</strong>
                                     </span>
                                 @endif     
@@ -149,7 +149,7 @@
                                 <input id="anggota_id" type="hidden" name="anggota_id" value="{{ Auth::user()->anggota->id }}" required readonly="">
                             
                                 @if ($errors->has('anggota_id'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('anggota_id') }}</strong>
                                     </span>
                                 @endif
@@ -168,7 +168,7 @@
                             <div class="col-md-6">
                                 <input id="jumlah_buku_dipinjam" type="number" class="form-control" name="jumlah_buku_dipinjam" value="{{ old('jumlah_buku_dipinjam') }}" min="0">
                                 @if ($errors->has('jumlah_buku_dipinjam'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('jumlah_buku_dipinjam') }}</strong>
                                     </span>
                                 @endif
