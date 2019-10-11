@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\TransaksiRepositories;
+use App\Repositories\BukuRepositories;
+use App\Repositories\AnggotaRepositories;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Buku;
@@ -17,9 +19,11 @@ class TransaksiController extends Controller
 {
     protected $transaksi = null;
 
-    public function __construct(TransaksiRepositories $transaksiRepo)
+    public function __construct(TransaksiRepositories $transaksiRepo, BukuRepositories $bukuRepo, AnggotaRepositories $anggotaRepo)
     {
-        $this->transaksiRepo = $transaksiRepo;
+        $this->transaksiRepo    = $transaksiRepo;
+        $this->bukuRepo         = $bukuRepo;
+        $this->anggotaRepo      = $anggotaRepo;
         $this->middleware('auth');
     }
 
@@ -47,10 +51,10 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        $getRow     = Transaksi::orderBy('id', 'DESC')->get();
+        $getRow     = $this->transaksiRepo->getIdTransaksi();
         $rowCount   = $getRow->count();
-
         $lastId     = $getRow->first();
+        
         $kode       = "TR00001";
 
         if($rowCount > 0):
@@ -67,8 +71,8 @@ class TransaksiController extends Controller
             endif;
         endif;
 
-        $bukus      = Buku::where('jumlah_buku', '>', 0)->get();
-        $anggotas   = Anggota::get();
+        $bukus      = $this->bukuRepo->getJumlahBuku();
+        $anggotas   = $this->anggotaRepo->getAll();
         return view('transaksi.create', compact('bukus', 'kode', 'anggotas'));
     }
 
@@ -80,7 +84,7 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

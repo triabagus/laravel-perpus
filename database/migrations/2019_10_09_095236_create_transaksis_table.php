@@ -21,6 +21,7 @@ class CreateTransaksisTable extends Migration
             $table->date('tgl_pinjam');
             $table->date('tgl_kembali');
             $table->enum('status',['pinjam','kembali']);
+            $table->integer('jumlah_buku_dipinjam');
             $table->text('ket')->nullable();
             $table->timestamps();
         });

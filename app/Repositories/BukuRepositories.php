@@ -37,4 +37,12 @@ class BukuRepositories implements MyInterface
     {
 
     }
+
+    /**
+     * Not Interface
+     */
+    public function getJumlahBuku()
+    {
+        return $this->model->where('jumlah_buku', '>', 0)->get();
+    }
 }

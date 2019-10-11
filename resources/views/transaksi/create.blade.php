@@ -158,6 +158,24 @@
                         </div>
                         @endif
 
+                        <div class="form-group{{ $errors->has('jumlah_buku_dipinjam') ? ' has-error' : '' }}">
+                            
+                            <label for="jumlah_buku_dipinjam" class="col-md-4 control-label">
+                                Jumlah Buku Dipinjam
+                            </label>
+                            
+                            
+                            <div class="col-md-6">
+                                <input id="jumlah_buku_dipinjam" type="number" class="form-control" name="jumlah_buku_dipinjam" value="{{ old('jumlah_buku_dipinjam') }}" min="0">
+                                @if ($errors->has('jumlah_buku_dipinjam'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('jumlah_buku_dipinjam') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                        </div>
+
                         <div class="form-group{{ $errors->has('ket') ? ' has-error' : '' }}">
                             
                             <label for="ket" class="col-md-4 control-label">

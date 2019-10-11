@@ -38,6 +38,7 @@
                                 <th>Peminjam</th>
                                 <th>Tgl Pinjam</th>
                                 <th>Tgl Kembali</th>
+                                <th>Jumlah Buku Dipinjam</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -57,7 +58,7 @@
                                 </td>
 
                                 <td>
-                                    {{$data->anggota->nama}}
+                                    {{$data->anggota->name}}
                                 </td>
                                 
                                 <td>
@@ -66,6 +67,10 @@
 
                                 <td>
                                     {{date('d/m/y', strtotime($data->tgl_kembali))}}
+                                </td>
+
+                                <td>
+                                    {{$data->jumlah_buku_dipinjam}}
                                 </td>
                                 
                                 <td>

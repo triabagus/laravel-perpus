@@ -38,8 +38,17 @@ class TransaksiRepositories implements MyInterface
 
     }
 
+    /**
+     * Not Interface
+     */
     public function getAnggota(int $id)
     {
         return $this->model->where('anggota_id', $id)->get();
     }
+
+    public function getIdTransaksi()
+    {
+        return $this->model->orderBy('id', 'DESC')->get();
+    }
+
 }
