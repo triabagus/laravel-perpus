@@ -32,7 +32,7 @@ class TransaksiController extends Controller
     {
         if(Auth::user()->level == 'user')
         {
-            $dataTransaksis = Transaksi::where('anggota_id', Auth::user()->anggota->id)->get();
+            $dataTransaksis = $this->transaksiRepo->getAnggota(Auth::user()->anggota->id);
         } else {
             $dataTransaksis = $this->transaksiRepo->getAll();
         }

@@ -37,4 +37,9 @@ class TransaksiRepositories implements MyInterface
     {
 
     }
+
+    public function getAnggota(int $id)
+    {
+        return $this->model->where('anggota_id', $id)->get();
+    }
 }

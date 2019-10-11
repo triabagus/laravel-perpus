@@ -145,7 +145,7 @@
                             </label>
                             
                             <div class="col-md-6">
-                                <input id="anggota_nama" type="text" class="form-control" readonly="" value="{{Auth::user()->anggota->nama}}" required>
+                                <input id="anggota_nama" type="text" class="form-control" readonly="" value="{{Auth::user()->anggota->name}}" required>
                                 <input id="anggota_id" type="hidden" name="anggota_id" value="{{ Auth::user()->anggota->id }}" required readonly="">
                             
                                 @if ($errors->has('anggota_id'))
