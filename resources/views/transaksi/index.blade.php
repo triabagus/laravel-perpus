@@ -6,6 +6,12 @@
     });
 
 } );
+
+$(document).on("click", ".btn-data", function () {
+    var itemid= $(this).attr('data-item'), kodeTransaksi = $(this).attr('kode-transaksi');
+    $("#lineitem").attr("action","/transaksi/"+itemid);
+    $("#kodeitem").text(kodeTransaksi);
+});
 </script>
 @stop
 @extends('layouts.app')
@@ -92,26 +98,18 @@
                                         <form action="{{ route('transaksi.update', $data->id) }}" method="post" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             {{ method_field('put') }}
-                                            <button class="dropdown-item" onclick="return confirm('Anda yakin data ini sudah kembali?')"> Sudah Kembali
+                                            <button class="dropdown-item"> Sudah Kembali
                                             </button>
                                         </form>
                                         @endif
-                                        <form action="{{ route('transaksi.destroy', $data->id) }}" class="pull-left"  method="post">
-                                        {{ csrf_field() }}
-                                        {{ method_field('delete') }}
-                                        <button class="dropdown-item" onclick="return confirm('Anda yakin ingin menghapus data ini?')"> Delete
+                                        <button data-item="{{ $data->id }}" kode-transaksi="{{$data->kode_transaksi}}" class="dropdown-item btn-data" data-toggle="modal" data-target="#myModal"> 
+                                            Delete
                                         </button>
-                                        </form>
                                         </div>
                                         </div>
                                     @else
                                         @if($data->status == 'pinjam')
-                                        <form action="{{ route('transaksi.update', $data->id) }}" method="post" enctype="multipart/form-data">
-                                            {{ csrf_field() }}
-                                            {{ method_field('put') }}
-                                            <button class="btn btn-info btn-xs" onclick="return confirm('Anda yakin data ini sudah kembali?')">Sudah Kembali
-                                            </button>
-                                        </form>
+                                        -
                                         @else
                                         -
                                         @endif
@@ -128,4 +126,37 @@
     </div>
 
 </div>
+
+
+    @if(Auth::user()->level == 'admin')
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document" >
+        
+    <div class="modal-content" style="background: #fff;">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Transaksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    <div class="modal-body">
+        Apakah anda ingin menghapus data transaksi , <span class="text-danger" id="kodeitem"></span>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form action="" class="pull-left"  method="post" id="lineitem">
+        {{ csrf_field() }}
+        {{ method_field('delete') }}
+        <button class="btn btn-danger"> Delete
+        </button>
+        </form>
+    </div>
+
+    </div>
+    </div>
+    </div>
+    @endif
+
+
 @endsection

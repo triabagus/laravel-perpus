@@ -20,7 +20,7 @@ class TransaksiRepositories implements MyInterface
 
     public function getById(int $id)
     {
-
+        return $this->model->findOrFail($id);
     }
 
     public function create(array $attribute)
@@ -35,7 +35,7 @@ class TransaksiRepositories implements MyInterface
 
     public function delete(int $id)
     {
-
+        return $this->model->find($id)->delete();
     }
 
     /**
@@ -68,5 +68,16 @@ class TransaksiRepositories implements MyInterface
         return $customMessage = [
             'jumlah_buku_dipinjam.required' => 'kosong'
         ];
+    }
+
+    public function generate_kode($input, $id, $strength = 16) {
+        $input_length = strlen($input);
+        $random_string = '';
+        for($i = 0; $i < $strength; $i++) {
+            $random_character = $input[mt_rand(0, $input_length - 1)];
+            $random_string .= $random_character;
+        }
+    
+        return "TR".$random_string."".$id;
     }
 }

@@ -52,24 +52,18 @@ class TransaksiController extends Controller
     public function create()
     {
         $getRow     = $this->transaksiRepo->getIdTransaksi();
-        $rowCount   = $getRow->count();
-        $lastId     = $getRow->first();
-        
-        $kode       = "TR00001";
+        $rowCount = $getRow->count();
 
-        if($rowCount > 0):
-            if($lastId->id < 9):
-                $kode = "TR0000".''.($lastId->id + 1);
-            elseif($lastId->id < 99):
-                $kode = "TR000".''.($lastId->id + 1);
-            elseif($lastId->id < 999):
-                $kode = "TR00".''.($lastId->id + 1);
-            elseif($lastId->id < 9999):
-                $kode = "TR0".''.($lastId->id + 1);
-            else:
-                $kode = "TR".''.($lastId->id + 1);
-            endif;
+        if($rowCount <= 0):
+            $lastId     = 0;
+        else:
+            $lastId     = $getRow->first();
+            $lastId     = $lastId->id;
         endif;
+
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $kode       = $this->transaksiRepo->generate_kode($permitted_chars, $lastId, 16);
 
         $bukus      = $this->bukuRepo->getJumlahBuku();
         $anggotas   = $this->anggotaRepo->getAll();
@@ -84,7 +78,28 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->transaksiRepo->validationRule(), $this->transaksiRepo->customMessageRule());
+        $this->validate(
+            $request, $this->transaksiRepo->validationRule(), $this->transaksiRepo->customMessageRule()
+        );
+
+        $transaksi = Transaksi::create([
+            'kode_transaksi' => $request->get('kode_transaksi'),
+            'tgl_pinjam' => $request->get('tgl_pinjam'),
+            'tgl_kembali' => $request->get('tgl_kembali'),
+            'buku_id' => $request->get('buku_id'),
+            'anggota_id' => $request->get('anggota_id'),
+            'ket' => $request->get('ket'),
+            'jumlah_buku_dipinjam' => $request->get('jumlah_buku_dipinjam'),
+            'status' => 'pinjam'
+        ]);
+
+        $transaksi->buku->where('id', $transaksi->buku_id)
+                    ->update([
+                        'jumlah_buku' => ($transaksi->buku->jumlah_buku - $request->get('jumlah_buku_dipinjam')),
+                    ]);
+        
+        alert()->success('Berhasil.','Data telah ditambahkan!');
+        return redirect()->route('transaksi.index');
 
     }
 
@@ -105,9 +120,9 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaksi $transaksi)
+    public function edit(int $id)
     {
-        //
+        
     }
 
     /**
@@ -117,9 +132,21 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request $request, int $id)
     {
-        //
+        $transaksi = $this->transaksiRepo->getById($id);
+
+        $transaksi->update([
+                'status' => 'kembali'
+        ]);
+
+        $transaksi->buku->where('id', $transaksi->buku->id)
+                        ->update([
+                            'jumlah_buku' => ($transaksi->buku->jumlah_buku + $transaksi->jumlah_buku_dipinjam),
+                        ]);
+
+        alert()->success('Berhasil.','Buku telah kembali!');
+        return redirect()->route('transaksi.index');
     }
 
     /**
@@ -128,8 +155,10 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy(int $id)
     {
-        //
+        $this->transaksiRepo->delete($id);
+        alert()->success('Berhasil.','Data telah dihapus!');
+        return redirect()->route('transaksi.index');
     }
 }
